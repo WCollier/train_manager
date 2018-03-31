@@ -2,15 +2,23 @@
 
 {% block content %}
 
-{% for collection in collection_list.all %}
-    <h1>{{ collection.name }} </h1>
-    <h3>{{ collection.description }}</h3>
+{% if collection_list.exists %}
+    {% for collection in collection_list.all %}
+        <h1>{{ collection.name }} </h1>
 
-    <ol>
-        {% for train in collection.modeltrain_set.all %}
-            <li>{{ train }}</li>
-        {% endfor %}
-    </ol>
-{% endfor %}
+        <h3>{{ collection.description }}</h3>
+
+        <ol>
+            {% for train in collection.modeltrain_set.all %}
+                <li>{{ train }}</li>
+            {% endfor %}
+        </ol>
+    {% endfor %}
+
+{% else %}
+
+    <h1>Not logged in</h1>
+
+{% endif %}
 
 {% endblock %}
