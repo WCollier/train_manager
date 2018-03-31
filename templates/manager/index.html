@@ -1,6 +1,16 @@
 {% extends 'base.html' %} 
 
 {% block content %}
-<h1>Hello, world</h1>
-{{ test }} 
+
+{% for collection in collection_list.all %}
+    <h1>{{ collection.name }} </h1>
+    <h3>{{ collection.description }}</h3>
+
+    <ol>
+        {% for train in collection.modeltrain_set.all %}
+            <li>{{ train }}</li>
+        {% endfor %}
+    </ol>
+{% endfor %}
+
 {% endblock %}

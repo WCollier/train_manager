@@ -1,9 +1,13 @@
 from django.shortcuts import render
+from django.views import generic
 
+from .models import Collection, ModelTrain
 
-def index(request):
-    context = {
-        'test': 'hello, world'
-    }
+class IndexView(generic.ListView):
+    template_name = 'manager/index.html'
 
-    return render(request, 'manager/index.html', context)
+    context_object_name = 'collection_list'
+
+    def get_queryset(self):
+        """Return all the models (for now)"""
+        return Collection.objects.all()
