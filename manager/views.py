@@ -1,4 +1,9 @@
-from django.http import HttpResponse
+from django.shortcuts import render
+
 
 def index(request):
-    return HttpResponse("Hello, world. You are at manager index")
+    context = {
+        'test': 'hello, world'
+    }
+
+    return render(request, 'manager/index.html', context)

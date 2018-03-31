@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    {% load static %}
+    <head>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link type="text/css" rel="stylesheet" href="{% static 'manager/materialize.min.css' %}"  media="screen,projection"/>
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+    <body>
+        <nav>
+            <div class="nav-wrapper">
+                <a href="#" class="brand-logo">Logo</a>
+                <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    {# Change the active tag depending upon the route #}
+                    {% with request.resolver_match.url_name as url_name %}
+                        <li class="{% if url_name == 'index' %} active {% endif %}"><a href="">Something</a></li>
+                    {% endwith %}
+                </ul>
+            </div>
+        </nav>
+        {% block content %}
+        {% endblock %}
+        <script type="text/javascript" src="{% static 'manager/materialize.min.js' %}"></script>
+    </body>
+</html>
