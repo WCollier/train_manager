@@ -1,0 +1,20 @@
+{% extends 'base.html' %} 
+
+{% block content %}
+
+<form action="" method="post">
+    {% csrf_token %}
+
+    {{ form.as_p }}
+
+    <input type="submit" class="btn green waves-effect waves-light" value="Submit">
+</form>
+
+{# We have to initialise all of the select element using JS for some reason... #}
+<script type="text/javascript">
+    const elems = document.querySelectorAll('select');
+
+    Array.from(elems).forEach(elem => M.FormSelect.init(elem, ""));
+</script>
+
+{% endblock %}
