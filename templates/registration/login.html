@@ -3,7 +3,7 @@
 {% block content %}
 
 <div class="valign-wrapper row login-box">
-    <div class="col card hoverable s10 pull-s1 m6 pull-m3 l4 pull-l4">
+    <div class="col card hoverable col s6 offset-s3 valign">
       <form method="post" action="{% url 'login' %}">
         {% csrf_token %}
 
@@ -20,10 +20,9 @@
             </div>
           </div>
           <div class="card-action right-align">
-            <a href="{% url 'password_reset' %}">
-              <input type="reset" id="reset" class="btn-flat grey-text waves-effect">
+            <a class="btn-flat grey-text waves-effect" href="{% url 'password_reset' %}">
+              Reset
             </a>
-
             <input type="submit" class="btn green waves-effect waves-light" value="Login">
           </div>
           {% if form.errors %}
