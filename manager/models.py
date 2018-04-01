@@ -4,16 +4,6 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 
 from . import manufacturers 
 
-class Collection(models.Model):
-    owner = models.ForeignKey(User, on_delete=models.CASCADE)
-
-    name = models.CharField(max_length=30)
-
-    description = models.CharField(max_length=300)
-
-    def __str__(self):
-        return "{0}".format(self.name)
-
 class ModelTrain(models.Model):
     TRACTION_TYPES = (
         ("Diesel", "Diesel"),
@@ -29,8 +19,6 @@ class ModelTrain(models.Model):
         ("N", "N"),
     )
 
-    collection = models.ForeignKey(Collection, on_delete=models.CASCADE, null=True)
-
     manufacturer = models.CharField(max_length=100, choices=manufacturers.MANUFACTURERS)
 
     name = models.CharField(max_length=30)
@@ -44,4 +32,16 @@ class ModelTrain(models.Model):
     era = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(9)])
 
     def __str__(self):
-        return "{0}".format(self.name) 
+        return self.name
+
+class Collection(models.Model):
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    name = models.CharField(max_length=30)
+
+    description = models.CharField(max_length=300)
+
+    trains = models.ManyToManyField(ModelTrain)
+
+    def __str__(self):
+        return self.name

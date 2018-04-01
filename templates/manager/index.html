@@ -3,13 +3,14 @@
 {% block content %}
 
 {% if collection_list.exists %}
+    {{collection_list.trains}}
     {% for collection in collection_list.all %}
         <h1>{{ collection.name }} </h1>
 
         <h3>{{ collection.description }}</h3>
 
         <ol>
-            {% for train in collection.modeltrain_set.all %}
+            {% for train in collection.trains.all %}
                 <li>{{ train }}</li>
             {% endfor %}
         </ol>
