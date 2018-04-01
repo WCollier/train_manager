@@ -1,6 +1,4 @@
-from django.shortcuts import render
 from django.views import generic
-from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .models import Collection, ModelTrain
 
@@ -13,8 +11,7 @@ class IndexView(generic.ListView):
 
     def get_queryset(self):
         if self.request.user.is_authenticated:
-            #return Collection.objects.filter(owner=self.request.user)
-            return Collection.objects.all()
+            return Collection.objects.filter(owner=self.request.user)
 
         else:
             return Collection.objects.none()
