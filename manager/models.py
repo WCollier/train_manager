@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
 
-from . import manufacturers 
+from . import manufacturers
 
 class ModelTrain(models.Model):
     TRACTION_TYPES = (
@@ -41,7 +41,12 @@ class Collection(models.Model):
 
     description = models.CharField(max_length=300)
 
-    trains = models.ManyToManyField(ModelTrain)
+    trains = models.ManyToManyField(ModelTrain, through='CollectionTrain')
 
     def __str__(self):
         return self.name
+
+class CollectionTrain(models.Model):
+    trains = models.ForeignKey(ModelTrain, on_delete=models.CASCADE)
+
+    collection = models.ForeignKey(Collection, on_delete=models.CASCADE)
