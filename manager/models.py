@@ -5,6 +5,7 @@ from django.urls import reverse
 
 from . import manufacturers
 
+
 class ModelTrain(models.Model):
     TRACTION_TYPES = (
         ('Diesel', 'Diesel'),
@@ -21,21 +22,27 @@ class ModelTrain(models.Model):
     )
     name = models.CharField(max_length=30)
 
-    manufacturer = models.CharField(max_length=100, choices=manufacturers.MANUFACTURERS, default=manufacturers.MANUFACTURERS[0][0])
+    manufacturer = models.CharField(
+        max_length=100, choices=manufacturers.MANUFACTURERS,
+        default=manufacturers.MANUFACTURERS[0][0])
 
     model_class = models.CharField(max_length=30)
 
-    traction = models.CharField(max_length=10, choices=TRACTION_TYPES, default=TRACTION_TYPES[0][0])
+    traction = models.CharField(
+        max_length=10, choices=TRACTION_TYPES, default=TRACTION_TYPES[0][0])
 
-    scale = models.CharField(max_length=2, choices=SCALES, default=SCALES[0][0])
+    scale = models.CharField(
+        max_length=2, choices=SCALES, default=SCALES[0][0])
 
-    era = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(9)])
+    era = models.IntegerField(
+        validators=[MinValueValidator(1), MaxValueValidator(9)])
 
     def get_absolute_url(self):
         return reverse('model-train-detail', args=[str(self.id)])
 
     def __str__(self):
         return self.name
+
 
 class Collection(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -48,6 +55,7 @@ class Collection(models.Model):
 
     def __str__(self):
         return self.name
+
 
 class CollectionTrain(models.Model):
     trains = models.ForeignKey(ModelTrain, on_delete=models.CASCADE)
