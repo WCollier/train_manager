@@ -13,20 +13,25 @@
                 <a href="{% url 'index' %}" class="brand-logo center">Logo</a>
                 {# Change the active tag depending upon the route #}
                 {% with request.resolver_match.url_name as url_name %}
-                    <ul id="nav-mobile" class="left hide-on-med-and-down">
-                        <!--<li class="{% if url_name == 'collections' %} active {% endif %}"><a href="">Something</a></li>-->
-                        <li class="{% if url_name == 'model-train-add' %} active {% endif %}">
-                            <a href="{% url 'model-train-add' %}">Add Train</a>
-                        </li>
-                    </ul>
+                    {% if user.is_authenticated %}
+                        <ul id="nav-mobile" class="left hide-on-med-and-down">
+                            <li class="{% if url_name == 'collections' %} active {% endif %}">
+                                <a href="{% url 'collections' %}">Collections</a>
+                            </li>
+                            <li class="{% if url_name == 'model-train-add' %} active {% endif %}">
+                                <a href="{% url 'model-train-add' %}">Add Train</a>
+                            </li>
+                        </ul>
 
-                    <ul id="nav-mobile" class="right hide-on-med-and-down">
-                        {% if user.is_authenticated %}
+                        <ul id="nav-mobile" class="right hide-on-med-and-down">
                             <li class="{% if url_name == 'logout' %} active {% endif %}"><a href="{% url 'logout' %}">Logout</a></li>
-                        {% else %}
+                        </ul>
+
+                    {% else %}
+                        <ul id="nav-mobile" class="right hide-on-med-and-down">
                             <li class=""><a href="{% url 'login' %}">Login</a></li>
-                        {% endif %}
-                    </ul>
+                        </ul>
+                    {% endif %}
                 {% endwith %}
             </div>
         </nav>
