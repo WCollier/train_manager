@@ -4,6 +4,8 @@ from . import views
 
 urlpatterns = [
     path('', views.IndexView.as_view(), name='index'),
+    path('collections/', views.Collections.as_view(), name='collections'),
+    path('collections/<slug:pk>/', views.CollectionsDetail.as_view(), name='collections-detail'),
     path('models/', views.ModelTrains.as_view(), name='model-trains'),
     path('models/add/', views.ModelTrainCreate.as_view(), name='model-train-add'),
     path('models/<slug:pk>/', views.ModelTrainDetail.as_view(), name='model-train-detail'),

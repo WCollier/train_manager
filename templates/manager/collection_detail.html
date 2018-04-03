@@ -1,0 +1,31 @@
+{% extends 'base.html' %} 
+
+{% block content %}
+
+<div class="valign-wrapper row login-box">
+    <div class="col card hoverable col s6 offset-s3 valign">
+        <div class="card-content">
+            <span class="card-title">{{ object.name }}</span>
+            <div class="row">
+                <div class="input-field col s12">
+                    <span class="card-title">Description</span>
+
+                    <p>{{ object.description }}</p>
+                </div>
+                <div class="input-field col s12">
+                    <span class="card-title">Trains</span>
+
+                    <ul class="collection">
+                        {% for train in object.trains.all %}
+                            <a href="{% url 'model-train-detail' train.id %}">
+                                <li class="collection-item">{{ train.name }}</li>
+                            </a>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

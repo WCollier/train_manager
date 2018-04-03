@@ -1,9 +1,11 @@
 from django.views.generic import ListView, DetailView
-from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 
 from .models import Collection, ModelTrain
+
+# pylint: disable=too-many-ancestors
 
 class IndexView(ListView):
     model = Collection
@@ -16,8 +18,7 @@ class IndexView(ListView):
         if self.request.user.is_authenticated:
             return Collection.objects.filter(owner=self.request.user)
 
-        else:
-            return Collection.objects.none()
+        return Collection.objects.none()
 
 class ModelTrains(LoginRequiredMixin, ListView):
     model = ModelTrain
@@ -54,14 +55,13 @@ class ModelTrainCreate(LoginRequiredMixin, CreateView):
 class ModelTrainUpdate(LoginRequiredMixin, UpdateView):
     model = ModelTrain
 
+    success_url = reverse_lazy('model-trains')
+
     login_url = '/login/'
 
     redirect_field_name = 'redirect_to'
 
     fields = ['name', 'manufacturer', 'model_class', 'traction', 'scale', 'era']
-
-    def get_success_url(self):
-        return reverse_lazy('model-trains')
 
 class ModelTrainDelete(LoginRequiredMixin, DeleteView):
     model = ModelTrain
@@ -71,3 +71,26 @@ class ModelTrainDelete(LoginRequiredMixin, DeleteView):
     login_url = '/login/'
 
     redirect_field_name = 'redirect_to'
+
+class Collections(LoginRequiredMixin, ListView):
+    model = Collection
+
+    template_name = 'manager/collections.html'
+
+    context_object_name = 'collections'
+
+    login_url = '/login/'
+
+    redirect_field_name = 'redirect_to'
+
+    def get_queryset(self):
+        return Collection.objects.all()
+
+class CollectionsDetail(LoginRequiredMixin, DetailView):
+    model = Collection
+
+    login_url = '/login/'
+
+    redirect_field_name = 'redirect_to'
+
+    fields = ['name', 'description', 'trains']

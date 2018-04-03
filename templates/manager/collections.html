@@ -1,0 +1,35 @@
+{% extends 'base.html' %} 
+
+{% block content %}
+
+<div class="container">
+    {% for collection in collections %}
+        {% if forloop.counter|divisibleby:2 or forloop.first %}
+        <div class="row login-box">
+        {% endif %}
+
+            <div class="col s12 m6">
+                <div class="card hoverable s6 offset-s3">
+                    <div class="card-content">
+                        <a>
+                        <a href="{% url 'collections-detail' collection.id %}">
+                            <span class="card-title">{{ collection.name }}</span>
+                        </a>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <span class="card-title">Description</span>
+
+                                <p>{{ collection.description }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        {% if forloop.counter|divisibleby:2 or forloop.last %}
+        </div>
+        {% endif %}
+    {% endfor %}
+</div>
+
+{% endblock %}
