@@ -66,7 +66,7 @@ class ModelTrainUpdate(LoginRequiredMixin, UpdateView):
 class ModelTrainDelete(LoginRequiredMixin, DeleteView):
     model = ModelTrain
 
-    success_url = reverse_lazy('index')
+    success_url = reverse_lazy('model-trains')
 
     login_url = '/login/'
 
@@ -94,3 +94,32 @@ class CollectionsDetail(LoginRequiredMixin, DetailView):
     redirect_field_name = 'redirect_to'
 
     fields = ['name', 'description', 'trains']
+
+class CollectionCreate(LoginRequiredMixin, CreateView):
+    model = Collection
+
+    login_url = '/login/'
+
+    redirect_field_name = 'redirect_to'
+
+    fields = ['name', 'description', 'trains']
+
+class CollectionsUpdate(LoginRequiredMixin, UpdateView):
+    model = Collection 
+
+    success_url = reverse_lazy('model-trains')
+
+    login_url = '/login/'
+
+    redirect_field_name = 'redirect_to'
+
+    fields = ['name', 'description', 'trains']
+
+class CollectionsDelete(LoginRequiredMixin, DeleteView):
+    model = Collection 
+
+    success_url = reverse_lazy('collections')
+
+    login_url = '/login/'
+
+    redirect_field_name = 'redirect_to'
