@@ -2,19 +2,27 @@
 
 {% block content %}
 
-{% if collection_list.exists %}
-    {{collection_list.trains}}
-    {% for collection in collection_list.all %}
-        <h1>{{ collection.name }} </h1>
+{% load jchart %}
 
-        <h3>{{ collection.description }}</h3>
 
-        <ol>
-            {% for train in collection.trains.all %}
-                <li>{{ train }}</li>
-            {% endfor %}
-        </ol>
-    {% endfor %}
+{% if models.exists %}
+    <div class="row">
+        <div class="col s6 chart-padding">
+            {{ manufactuter_chart.as_html }}
+        </div>
+
+        <div class="col s6">
+            <h1>Models</h1>
+
+            <ol>
+                {% for model in models.all %}
+                    <li>
+                        <a class="model-link" href="{% url 'model-train-detail' model.id %}">{{ model }}</a>
+                    </li>
+                {% endfor %}
+            </ol>
+        </div>
+    </div>
 
 {% else %}
 

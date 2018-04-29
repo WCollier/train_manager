@@ -1,0 +1,15 @@
+.update-colour {
+    color: #2ef90a !important;
+}
+
+.delete-colour {
+    color: #ff0d0d !important; 
+}
+
+.chart-padding {
+    margin-top: 42px;
+}
+
+.model-link {
+    text-decoration: none;
+}

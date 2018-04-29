@@ -2,14 +2,10 @@
 
 {% block content %}
 
-<form id="collection-form" action="" method="post">
+<form action="" method="post">
     {% csrf_token %}
 
     {{ form.as_p }}
-
-    {% for inline in inlines %}
-        {{ inline }}
-    {% endfor %}
 
     <input type="submit" class="btn green waves-effect waves-light" value="Submit">
 </form>
@@ -18,7 +14,7 @@
 <script type="text/javascript">
     const elems = document.querySelectorAll('select');
 
-    Array.from(elems).forEach(elem => M.FormSelect.init(elem, ''));
+    Array.from(elems).forEach(elem => M.FormSelect.init(elem, ""));
 </script>
 
 {% endblock %}

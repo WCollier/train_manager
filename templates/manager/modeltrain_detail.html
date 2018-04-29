@@ -33,6 +33,10 @@
                     <p>{{ object.era }}</p>
                 </div>
             </div>
+            <div class="card-action">
+                <a class="update-colour" href="{% url 'model-train-update' object.id %}">Update</a>
+                <a class="delete-colour" href="{% url 'model-train-delete' object.id %}">Delete</a>
+            </div>
         </div>
     </div>
 </div>

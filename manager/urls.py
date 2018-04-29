@@ -7,7 +7,7 @@ urlpatterns = [
 
     path('collections/', views.Collections.as_view(), name='collections'),
     path('collections/new/', views.CollectionCreate.as_view(), name='collection-create'),
-    path('collections/<slug:pk>/', views.CollectionsDetail.as_view(), name='collections-detail'),
+    path('collections/<slug:pk>/', views.CollectionsDetail.as_view(), name='collection-detail'),
     path('collections/<int:pk>/update/', views.CollectionsUpdate.as_view(), name='collections-update'),
     path('collections/<int:pk>/delete/', views.CollectionsDelete.as_view(), name='collections-delete'),
 

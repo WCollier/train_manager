@@ -3,20 +3,29 @@
     {% load static %}
     <head>
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        <link type="text/css" rel="stylesheet" href="{% static 'manager/materialize.min.css' %}"  media="screen,projection"/>
+
+        <link type="text/css" rel="stylesheet" href="{% static 'manager/materialize.min.css' %}" media="screen,projection"/>
+
+        <link type="text/css" rel="stylesheet" href="{% static 'manager/style.css' %}"/>
 
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </head>
     <body>
         <nav class="blue lighten-3">
             <div class="nav-wrapper">
-                <a href="{% url 'index' %}" class="brand-logo center">Logo</a>
+                <a href="{% url 'index' %}" class="brand-logo center">Model Train Manager</a>
                 {# Change the active tag depending upon the route #}
                 {% with request.resolver_match.url_name as url_name %}
                     {% if user.is_authenticated %}
                         <ul id="nav-mobile" class="left hide-on-med-and-down">
                             <li class="{% if url_name == 'collections' %} active {% endif %}">
                                 <a href="{% url 'collections' %}">Collections</a>
+                            </li>
+                            <li class="{% if url_name == 'collection-create' %} active {% endif %}">
+                                <a href="{% url 'collection-create' %}">Add Collection</a>
+                            </li>
+                            <li class="{% if url_name == 'model-trains' %} active {% endif %}">
+                                <a href="{% url 'model-trains' %}">Model Trains</a>
                             </li>
                             <li class="{% if url_name == 'model-train-create' %} active {% endif %}">
                                 <a href="{% url 'model-train-create' %}">Add Train</a>
@@ -36,6 +45,8 @@
             </div>
         </nav>
         <script type="text/javascript" src="{% static 'manager/materialize.min.js' %}"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.bundle.min.js"></script>
 
         <div class="container">
             {% block content %}

@@ -20,6 +20,9 @@ class ModelTrain(models.Model):
         ('TT', 'TT'),
         ('N', 'N'),
     )
+
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+
     name = models.CharField(max_length=30)
 
     manufacturer = models.CharField(
@@ -51,7 +54,10 @@ class Collection(models.Model):
 
     description = models.CharField(max_length=300)
 
-    trains = models.ManyToManyField(ModelTrain, through='CollectionTrain')
+    trains = models.ManyToManyField(ModelTrain, through='CollectionTrain', blank=True)
+
+    def get_absolute_url(self):
+        return reverse('collection-detail', args=[str(self.id)])
 
     def __str__(self):
         return self.name

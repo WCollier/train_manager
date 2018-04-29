@@ -24,6 +24,10 @@
                     </ul>
                 </div>
             </div>
+            <div class="card-action">
+                <a class="update-colour" href="{% url 'collections-update' collection.id %}">Update</a>
+                <a class="delete-colour" href="{% url 'collections-delete' collection.id %}">Delete</a>
+            </div>
         </div>
     </div>
 </div>
