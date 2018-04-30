@@ -1,6 +1,9 @@
+"""
+The module for the manager app's views
+"""
+
 from django.views.generic import TemplateView, ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from django.forms import ModelChoiceField
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from extra_views import CreateWithInlinesView, UpdateWithInlinesView, InlineFormSet
@@ -11,6 +14,10 @@ from .charts import ManufacturerChart, TractionChart, ScaleChart, CollectionChar
 # pylint: disable=too-many-ancestors
 
 class IndexView(TemplateView):
+    """
+    The view which represents the index (/)
+    """
+
     model = ModelTrain
 
     template_name = 'manager/index.html'
@@ -29,6 +36,10 @@ class IndexView(TemplateView):
         return context
 
 class ModelTrains(LoginRequiredMixin, ListView):
+    """
+    This class represents a model train within the database
+    """
+
     model = ModelTrain
 
     template_name = 'manager/modeltrains.html'
@@ -43,6 +54,10 @@ class ModelTrains(LoginRequiredMixin, ListView):
         return ModelTrain.objects.filter(owner=self.request.user.id)
 
 class ModelTrainDetail(LoginRequiredMixin, DetailView):
+    """
+    This is the view which displays the train's information
+    """
+
     model = ModelTrain
 
     fields = ['name', 'manufacturer', 'model_class', 'traction', 'scale', 'era']
@@ -52,6 +67,10 @@ class ModelTrainDetail(LoginRequiredMixin, DetailView):
     redirect_field_name = 'redirect_to'
 
 class ModelTrainCreate(LoginRequiredMixin, CreateView):
+    """
+    This view creates a new model train
+    """
+
     model = ModelTrain
 
     fields = ['name', 'manufacturer', 'model_class', 'traction', 'scale', 'era']
@@ -66,6 +85,10 @@ class ModelTrainCreate(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 class ModelTrainUpdate(LoginRequiredMixin, UpdateView):
+    """
+    This view updates a model train
+    """
+
     model = ModelTrain
 
     success_url = reverse_lazy('model-trains')
@@ -77,6 +100,10 @@ class ModelTrainUpdate(LoginRequiredMixin, UpdateView):
     redirect_field_name = 'redirect_to'
 
 class ModelTrainDelete(LoginRequiredMixin, DeleteView):
+    """
+    This view deletes a model train
+    """
+
     model = ModelTrain
 
     success_url = reverse_lazy('model-trains')
@@ -86,6 +113,10 @@ class ModelTrainDelete(LoginRequiredMixin, DeleteView):
     redirect_field_name = 'redirect_to'
 
 class CollectionTrainInline(InlineFormSet):
+    """
+    This view is an inline form when handling model trains
+    """
+
     model = CollectionTrain
 
     fields = '__all__'
@@ -95,6 +126,10 @@ class CollectionTrainInline(InlineFormSet):
     redirect_field_name = 'redirect_to'
 
 class Collections(LoginRequiredMixin, ListView):
+    """
+    This view represents a list of the user's collections
+    """
+
     model = Collection
 
     template_name = 'manager/collections.html'
@@ -109,6 +144,10 @@ class Collections(LoginRequiredMixin, ListView):
         return Collection.objects.filter(owner=self.request.user.id)
 
 class CollectionsDetail(LoginRequiredMixin, DetailView):
+    """
+    This is the view which displays a collections information
+    """
+
     model = Collection
 
     fields = ['name', 'description', 'trains']
@@ -118,6 +157,10 @@ class CollectionsDetail(LoginRequiredMixin, DetailView):
     redirect_field_name = 'redirect_to'
 
 class CollectionCreate(LoginRequiredMixin, CreateWithInlinesView):
+    """
+    This view creates a collection
+    """
+
     model = Collection
 
     inlines = [CollectionTrainInline]
@@ -134,7 +177,11 @@ class CollectionCreate(LoginRequiredMixin, CreateWithInlinesView):
         return super().form_valid(form)
 
 class CollectionsUpdate(LoginRequiredMixin, UpdateWithInlinesView):
-    model = Collection 
+    """
+    This view updates a collection
+    """
+
+    model = Collection
 
     inlines = [CollectionTrainInline]
 
@@ -147,7 +194,11 @@ class CollectionsUpdate(LoginRequiredMixin, UpdateWithInlinesView):
     redirect_field_name = 'redirect_to'
 
 class CollectionsDelete(LoginRequiredMixin, DeleteView):
-    model = Collection 
+    """
+    This view deletes a collection
+    """
+
+    model = Collection
 
     success_url = reverse_lazy('collections')
 
@@ -156,6 +207,10 @@ class CollectionsDelete(LoginRequiredMixin, DeleteView):
     redirect_field_name = 'redirect_to'
 
 class StatisticsView(LoginRequiredMixin, TemplateView):
+    """
+    This view lists the statistics
+    """
+
     template_name = 'manager/statistics.html'
 
     login_url = '/login/'
@@ -163,6 +218,10 @@ class StatisticsView(LoginRequiredMixin, TemplateView):
     redirect_field_name = 'redirect_to'
 
 class ManufacturerChartView(LoginRequiredMixin, TemplateView):
+    """
+    This view shows the manufacturer chart
+    """
+
     template_name = 'manager/manufacturer_pie_chart.html'
 
     login_url = '/login/'
@@ -180,6 +239,10 @@ class ManufacturerChartView(LoginRequiredMixin, TemplateView):
         return context
 
 class TractionChartView(LoginRequiredMixin, TemplateView):
+    """
+    This view shows the traction chart
+    """
+
     template_name = 'manager/traction_pie_chart.html'
 
     login_url = '/login/'
@@ -197,6 +260,10 @@ class TractionChartView(LoginRequiredMixin, TemplateView):
         return context
 
 class ScaleChartView(LoginRequiredMixin, TemplateView):
+    """
+    This view shows the scale chart
+    """
+
     template_name = 'manager/scale_pie_chart.html'
 
     login_url = '/login/'
@@ -214,6 +281,10 @@ class ScaleChartView(LoginRequiredMixin, TemplateView):
         return context
 
 class CollectionChartView(LoginRequiredMixin, TemplateView):
+    """
+    This view shows the collection chart
+    """
+
     template_name = 'manager/collection_bar_chart.html'
 
     login_url = '/login/'
@@ -226,6 +297,6 @@ class CollectionChartView(LoginRequiredMixin, TemplateView):
         if self.request.user.is_authenticated:
             collection_chart = CollectionChart(self.request.user)
 
-            context['collection_chart'] = collection_chart 
+            context['collection_chart'] = collection_chart
 
         return context

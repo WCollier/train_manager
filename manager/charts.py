@@ -1,12 +1,20 @@
+"""
+The module which represents the charts
+"""
+
+import random
+
 from collections import Counter
 from jchart import Chart
 from jchart.config import DataSet
 
 from .models import ModelTrain, Collection
 
-import random
-
 class ManufacturerChart(Chart):
+    """
+    The chart which represents the percentage of manufacturers in a collection
+    """
+
     chart_type = 'pie'
 
     responsive = False
@@ -36,9 +44,17 @@ class ManufacturerChart(Chart):
         return [DataSet(data=data, backgroundColor=colours)]
 
     def generate_data(self):
+        """
+        This function calculates a percentage from a list of repeated items
+        """
+
         return calculate_percentage(self.manufacturer_list)
 
 class TractionChart(Chart):
+    """
+    This chart represents the different types of traction owned by the user
+    """
+
     chart_type = 'pie'
 
     responsive = False
@@ -47,7 +63,7 @@ class TractionChart(Chart):
         self.models = ModelTrain.objects.filter(owner=owner)
 
         self.traction_list = self.models.values_list('traction', flat=True)[::1]
-        
+
         super().__init__()
 
     def get_labels(self, *args, **kwargs):
@@ -63,13 +79,21 @@ class TractionChart(Chart):
         return [DataSet(data=data, backgroundColor=colours)]
 
     def generate_data(self):
+        """
+        This function calculates a percentage from a list of repeated items
+        """
+
         return calculate_percentage(self.traction_list)
 
 class ScaleChart(Chart):
+    """
+    This chart represents the different types of scale owned by the user
+    """
+
     chart_type = 'pie'
 
     responsive = False
-    
+
     def __init__(self, owner):
         self.models = ModelTrain.objects.filter(owner=owner)
 
@@ -88,11 +112,19 @@ class ScaleChart(Chart):
         return [DataSet(data=data, backgroundColor=colours)]
 
     def generate_data(self):
+        """
+        This function calculates a percentage from a list of repeated items
+        """
+
         list_of_scales = self.models.values_list('scale', flat=True)[::1]
 
         return calculate_percentage(list_of_scales)
 
 class CollectionChart(Chart):
+    """
+    This chart represents the number of trains in each collection
+    """
+
     chart_type = 'bar'
 
     def __init__(self, owner):
@@ -105,26 +137,44 @@ class CollectionChart(Chart):
     def get_labels(self, *args, **kwargs):
         return self.collections_list
 
-    def get_datasets(self, **kwargs):
+    def get_datasets(self, *args, **kwargs):
         data = self.generate_data()
 
         colours = list(map(lambda col: random_colour(), data))
 
         # Convert the query set to a list
-        return [DataSet(label='Number of Models Per Collection', data=data, backgroundColor=colours)]
+        return [DataSet(label='Number of Models Per Collection',
+                        data=data,
+                        backgroundColor=colours)]
 
     def generate_data(self):
+        """
+        This function calculates a percentage from a list of repeated items
+        """
+
         return list(map(lambda collec: collec.trains.count(), self.collections))
 
 def calculate_percentage(items):
+    """
+    This function takes a list of repeated items, the values are counted,
+    then converted to a percentage
+    """
+
     counted = Counter(items)
 
     counted_values = counted.values()
 
-    sum_of_counted = sum(counted_values) 
+    sum_of_counted = sum(counted_values)
 
     return list(map(lambda value: value * 100.0 / sum_of_counted, counted_values))
 
 
 def random_colour():
-    return '#%02X%02X%02X' % (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
+    """
+    This function generates a random hexadecimal number
+    """
+
+    return '#%02X%02X%02X' % (
+        random.randint(0, 255),
+        random.randint(0, 255),
+        random.randint(0, 255))
