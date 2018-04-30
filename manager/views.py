@@ -155,14 +155,14 @@ class CollectionsDelete(LoginRequiredMixin, DeleteView):
 
     redirect_field_name = 'redirect_to'
 
-class StatisticsView(TemplateView, LoginRequiredMixin):
+class StatisticsView(LoginRequiredMixin, TemplateView):
     template_name = 'manager/statistics.html'
 
     login_url = '/login/'
 
     redirect_field_name = 'redirect_to'
 
-class ManufacturerChartView(TemplateView, LoginRequiredMixin):
+class ManufacturerChartView(LoginRequiredMixin, TemplateView):
     template_name = 'manager/manufacturer_pie_chart.html'
 
     login_url = '/login/'
@@ -181,7 +181,7 @@ class ManufacturerChartView(TemplateView, LoginRequiredMixin):
 
         return context
 
-class TractionChartView(TemplateView, LoginRequiredMixin):
+class TractionChartView(LoginRequiredMixin, TemplateView):
     template_name = 'manager/traction_pie_chart.html'
 
     login_url = '/login/'
@@ -200,7 +200,7 @@ class TractionChartView(TemplateView, LoginRequiredMixin):
 
         return context
 
-class ScaleChartView(TemplateView, LoginRequiredMixin):
+class ScaleChartView(LoginRequiredMixin, TemplateView):
     template_name = 'manager/scale_pie_chart.html'
 
     login_url = '/login/'
@@ -219,7 +219,7 @@ class ScaleChartView(TemplateView, LoginRequiredMixin):
 
         return context
 
-class CollectionChartView(TemplateView, LoginRequiredMixin):
+class CollectionChartView(LoginRequiredMixin, TemplateView):
     template_name = 'manager/collection_bar_chart.html'
 
     login_url = '/login/'
