@@ -1,6 +1,8 @@
-from django.urls import path
+"""
+This module represents the different views for the manager app
+"""
 
-from jchart.views import ChartView
+from django.urls import path
 
 from . import views
 

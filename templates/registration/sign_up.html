@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="valign-wrapper row login-box">
+    <div class="col card hoverable col s6 offset-s3 valign">
+      <form method="post">
+        {% csrf_token %}
+
+        <div class="card-content">
+          <span class="card-title">Signup</span>
+          <div class="row">
+            <div class="input-field col s12">
+              {{ form.username.label_tag }}
+              {{ form.username }}
+            </div>
+            <div class="input-field col s12">
+              {{ form.password1.label_tag }}
+              {{ form.password1 }}
+            </div>
+            <div class="input-field col s12">
+              {{ form.password2.label_tag }}
+              {{ form.password2 }}
+            </div>
+          </div>
+          <div class="card-action right-align">
+            <a class="btn-flat grey-text waves-effect" href="{% url 'password_reset' %}">
+              Reset
+            </a>
+            <input type="submit" class="btn green waves-effect waves-light" value="Login">
+          </div>
+          {% if form.errors %}
+            <div class="card-action">
+                <p>Your username and password didn't match. Please try again.</p>
+            </div>
+          {% endif %}
+          {% if next %}
+            {% if user.is_authenticated %}
+              <div class="card-action">
+                <p>Your account doesn't have access to this page. To proceed, please login with an account that has access.</p>
+              </div>
+            {% else %}
+              <div class="card-action">
+                <p>Please login to see this page</p>
+              </div>
+            {% endif %}
+          {% endif %}
+        </div>
+      </form>
+    </div>
+</div>
+
+{% endblock %}

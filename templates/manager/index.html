@@ -2,7 +2,7 @@
 
 {% block content %}
 
-{% if models.exists %}
+{% if user.is_authenticated %}
     <h1>Hello, {{ user.username }}</h1>
 
     <div class="row">
@@ -33,7 +33,7 @@
 
 {% else %}
 
-    <h1>Please <a href="{% url 'login' %}">login in</a></h1>
+    <h1>Please <a href="{% url 'login' %}">login in</a> or <a href="{% url 'sign-up' %}">sign up</a>.</h1>
 
 {% endif %}
 
