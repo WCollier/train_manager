@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% load jchart %}
+
+<h1 class="title">Number of Models Per Collection</h1>
+
+{{ collection_chart.as_html }}
+
+{% endblock %}

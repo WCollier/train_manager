@@ -1,0 +1,29 @@
+<ul class="col s{{ width|default:'12' }} collection with-header ">
+    <li class="collection-header">
+        <h4>Statistics</h4>
+    </li>
+    <li class="collection-item">
+        <div>
+            Manufacturer Pie Chart 
+            <a href="{% url 'statistics-manufacturer-chart' %}" class="secondary-content">
+                <i class="material-icons">send</i>
+            </a>
+        </div>
+    </li>
+    <li class="collection-item">
+        <div>
+            Traction Pie Chart 
+            <a href="{% url 'statistics-traction-chart' %}" class="secondary-content">
+                <i class="material-icons">send</i>
+            </a>
+        </div>
+    </li>
+    <li class="collection-item">
+        <div>
+            Scale Pie Chart 
+            <a href="{% url 'statistics-scale-chart' %}" class="secondary-content">
+                <i class="material-icons">send</i>
+            </a>
+        </div>
+    </li>
+</ul>

@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from jchart import Chart
 from jchart.config import DataSet
 
-from .models import ModelTrain
+from .models import ModelTrain, Collection
 
 class ManufacturerChart(Chart):
     chart_type = 'pie'
@@ -12,34 +12,106 @@ class ManufacturerChart(Chart):
     responsive = False
 
     def set_owner(self, owner):
-        self.owner = owner
+        self.models = ModelTrain.objects.filter(owner=owner)
+
+        self.manufacturer_list = self.models.values_list('manufacturer', flat=True)[::1]
 
     def get_labels(self, *args, **kwargs):
-        models = ModelTrain.objects.filter(owner=self.owner)
-
         # Convert the query set to a list
-        return models.values_list('manufacturer', flat=True)[::1]
+        return self.manufacturer_list
 
     def get_datasets(self, *args, **kwargs):
         data = self.generate_data()
 
-        colours = list(map(lambda col: self.random_colour(), data))
+        colours = list(map(lambda col: random_colour(), data))
 
         # Convert the query set to a list
         return [DataSet(data=data, backgroundColor=colours)]
 
     def generate_data(self):
-        models = ModelTrain.objects.filter(owner=self.owner)
+        return calculate_percentage(self.manufacturer_list)
 
-        list_of_manufacturers = [manufacturer for manufacturer in models.values_list('manufacturer', flat=True)[::1]]
+class TractionChart(Chart):
+    chart_type = 'pie'
 
-        counted = Counter(list_of_manufacturers)
+    responsive = False
 
-        counted_values = counted.values()
+    def set_owner(self, owner):
+        self.models = ModelTrain.objects.filter(owner=owner)
 
-        sum_of_counted = sum(counted_values) 
+        self.traction_list = self.models.values_list('traction', flat=True)[::1]
 
-        return list(map(lambda value: value * 100.0 / sum_of_counted, counted_values))
+    def get_labels(self, *args, **kwargs):
+        # Get the tuple, remove duplicates and convert to list
+        return list(set(sum(ModelTrain.TRACTION_TYPES, ())))
 
-    def random_colour(self):
-        return '#%02X%02X%02X' % (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
+    def get_datasets(self, *args, **kwargs):
+        data = self.generate_data()
+
+        colours = list(map(lambda col: random_colour(), data))
+
+        # Convert the query set to a list
+        return [DataSet(data=data, backgroundColor=colours)]
+
+    def generate_data(self):
+        return calculate_percentage(self.traction_list)
+
+class ScaleChart(Chart):
+    chart_type = 'pie'
+
+    responsive = False
+
+    def set_owner(self, owner):
+        self.models = ModelTrain.objects.filter(owner=owner)
+
+    def get_labels(self, *args, **kwargs):
+        # Get the tuple, remove duplicates and convert to list
+        return list(set(sum(ModelTrain.SCALES, ())))
+
+    def get_datasets(self, *args, **kwargs):
+        data = self.generate_data()
+
+        colours = list(map(lambda col: random_colour(), data))
+
+        # Convert the query set to a list
+        return [DataSet(data=data, backgroundColor=colours)]
+
+    def generate_data(self):
+        list_of_scales = self.models.values_list('scale', flat=True)[::1]
+
+        return calculate_percentage(list_of_scales)
+
+class CollectionChart(Chart):
+    chart_type = 'bar'
+
+    def set_owner(self, owner):
+        self.collections = Collection.objects.filter(owner=owner)
+
+        self.collections_list = self.collections.values_list('name', flat=True)[::1]
+
+    def get_labels(self, *args, **kwargs):
+        return self.collections_list
+
+    def get_datasets(self, **kwargs):
+        data = self.generate_data()
+
+        colours = list(map(lambda col: random_colour(), data))
+
+        # Convert the query set to a list
+        return [DataSet(label='Number of Models Per Collection', data=data, backgroundColor=colours)]
+
+    def generate_data(self):
+        return list(map(lambda collec: collec.trains.count(), self.collections))
+
+def calculate_percentage(items):
+    counted = Counter(items)
+
+    counted_values = counted.values()
+
+    sum_of_counted = sum(counted_values) 
+
+    return list(map(lambda value: value * 100.0 / sum_of_counted, counted_values))
+
+
+def random_colour():
+    return '#%02X%02X%02X' % (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))

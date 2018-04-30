@@ -2,26 +2,33 @@
 
 {% block content %}
 
-{% load jchart %}
-
-
 {% if models.exists %}
+    <h1>Hello, {{ user.username }}</h1>
+
     <div class="row">
-        <div class="col s6 chart-padding">
-            {{ manufactuter_chart.as_html }}
-        </div>
+        <ul class="col s6 collection with-header ">
+            <li class="collection-header">
+                <h4>Your Collection</h4>
+            </li>
+            <li class="collection-item">
+                <div>
+                    View Your Collection 
+                    <a href="{% url 'collections' %}" class="secondary-content">
+                        <i class="material-icons">send</i>
+                    </a>
+                </div>
+            </li>
+            <li class="collection-item">
+                <div>
+                    Add Train 
+                    <a href="{% url 'model-train-create' %}" class="secondary-content">
+                        <i class="material-icons">send</i>
+                    </a>
+                </div>
+            </li>
+        </ul>
 
-        <div class="col s6">
-            <h1>Models</h1>
-
-            <ol>
-                {% for model in models.all %}
-                    <li>
-                        <a class="model-link" href="{% url 'model-train-detail' model.id %}">{{ model }}</a>
-                    </li>
-                {% endfor %}
-            </ol>
-        </div>
+        {% include 'statistics_list.html' with width='6' %} 
     </div>
 
 {% else %}

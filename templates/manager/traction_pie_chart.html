@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% load jchart %}
+
+<h1 class="title">Traction By Percentage</h1>
+
+{{ traction_chart.as_html }}
+
+{% endblock %}
