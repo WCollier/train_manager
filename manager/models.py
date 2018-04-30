@@ -54,16 +54,10 @@ class Collection(models.Model):
 
     description = models.CharField(max_length=300)
 
-    trains = models.ManyToManyField(ModelTrain, through='CollectionTrain', blank=True)
+    trains = models.ManyToManyField(ModelTrain)
 
     def get_absolute_url(self):
         return reverse('collection-detail', args=[str(self.id)])
 
     def __str__(self):
         return self.name
-
-
-class CollectionTrain(models.Model):
-    trains = models.ForeignKey(ModelTrain, on_delete=models.CASCADE)
-
-    collection = models.ForeignKey(Collection, on_delete=models.CASCADE)

@@ -6,9 +6,9 @@ from django.views.generic import TemplateView, ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
-from extra_views import CreateWithInlinesView, UpdateWithInlinesView, InlineFormSet
 
-from .models import Collection, ModelTrain, CollectionTrain
+from .models import Collection, ModelTrain
+from .forms import CollectionForm
 from .charts import ManufacturerChart, TractionChart, ScaleChart, CollectionChart
 
 # pylint: disable=too-many-ancestors
@@ -112,19 +112,6 @@ class ModelTrainDelete(LoginRequiredMixin, DeleteView):
 
     redirect_field_name = 'redirect_to'
 
-class CollectionTrainInline(InlineFormSet):
-    """
-    This view is an inline form when handling model trains
-    """
-
-    model = CollectionTrain
-
-    fields = '__all__'
-
-    login_url = '/login/'
-
-    redirect_field_name = 'redirect_to'
-
 class Collections(LoginRequiredMixin, ListView):
     """
     This view represents a list of the user's collections
@@ -141,7 +128,7 @@ class Collections(LoginRequiredMixin, ListView):
     redirect_field_name = 'redirect_to'
 
     def get_queryset(self):
-        return Collection.objects.filter(owner=self.request.user.id)
+        return Collection.objects.filter(owner=self.request.user)
 
 class CollectionsDetail(LoginRequiredMixin, DetailView):
     """
@@ -156,42 +143,52 @@ class CollectionsDetail(LoginRequiredMixin, DetailView):
 
     redirect_field_name = 'redirect_to'
 
-class CollectionCreate(LoginRequiredMixin, CreateWithInlinesView):
+class CollectionCreate(LoginRequiredMixin, CreateView):
     """
     This view creates a collection
     """
 
     model = Collection
 
-    inlines = [CollectionTrainInline]
-
-    fields = ['name', 'description']
+    form_class = CollectionForm
 
     login_url = '/login/'
 
     redirect_field_name = 'redirect_to'
 
-    def forms_valid(self, form, inlines):
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+
+        kwargs['user'] = self.request.user
+
+        return kwargs
+
+    def form_valid(self, form):
         form.instance.owner = self.request.user
 
         return super().form_valid(form)
 
-class CollectionsUpdate(LoginRequiredMixin, UpdateWithInlinesView):
+class CollectionsUpdate(LoginRequiredMixin, UpdateView):
     """
     This view updates a collection
     """
 
     model = Collection
 
-    inlines = [CollectionTrainInline]
-
-    fields = ['name', 'description']
+    form_class = CollectionForm
 
     success_url = reverse_lazy('collections')
 
     login_url = '/login/'
 
     redirect_field_name = 'redirect_to'
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+
+        kwargs['user'] = self.request.user
+
+        return kwargs
 
 class CollectionsDelete(LoginRequiredMixin, DeleteView):
     """
