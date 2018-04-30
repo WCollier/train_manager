@@ -1,20 +1,27 @@
 from collections import Counter
-import random
-from django.contrib.auth.models import User
 from jchart import Chart
 from jchart.config import DataSet
 
 from .models import ModelTrain, Collection
+
+import random
 
 class ManufacturerChart(Chart):
     chart_type = 'pie'
 
     responsive = False
 
-    def set_owner(self, owner):
+    def __init__(self, owner):
         self.models = ModelTrain.objects.filter(owner=owner)
 
         self.manufacturer_list = self.models.values_list('manufacturer', flat=True)[::1]
+
+        super().__init__()
+
+    #def set_owner(self, owner):
+        #self.models = ModelTrain.objects.filter(owner=owner)
+
+        #self.manufacturer_list = self.models.values_list('manufacturer', flat=True)[::1]
 
     def get_labels(self, *args, **kwargs):
         # Convert the query set to a list
@@ -36,10 +43,12 @@ class TractionChart(Chart):
 
     responsive = False
 
-    def set_owner(self, owner):
+    def __init__(self, owner):
         self.models = ModelTrain.objects.filter(owner=owner)
 
         self.traction_list = self.models.values_list('traction', flat=True)[::1]
+        
+        super().__init__()
 
     def get_labels(self, *args, **kwargs):
         # Get the tuple, remove duplicates and convert to list
@@ -60,9 +69,11 @@ class ScaleChart(Chart):
     chart_type = 'pie'
 
     responsive = False
-
-    def set_owner(self, owner):
+    
+    def __init__(self, owner):
         self.models = ModelTrain.objects.filter(owner=owner)
+
+        super().__init__()
 
     def get_labels(self, *args, **kwargs):
         # Get the tuple, remove duplicates and convert to list
@@ -84,10 +95,12 @@ class ScaleChart(Chart):
 class CollectionChart(Chart):
     chart_type = 'bar'
 
-    def set_owner(self, owner):
+    def __init__(self, owner):
         self.collections = Collection.objects.filter(owner=owner)
 
         self.collections_list = self.collections.values_list('name', flat=True)[::1]
+
+        super().__init__()
 
     def get_labels(self, *args, **kwargs):
         return self.collections_list

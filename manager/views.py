@@ -173,9 +173,7 @@ class ManufacturerChartView(LoginRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
 
         if self.request.user.is_authenticated:
-            manufacturer_chart = ManufacturerChart()
-
-            manufacturer_chart.set_owner(self.request.user)
+            manufacturer_chart = ManufacturerChart(self.request.user)
 
             context['manufacturer_chart'] = manufacturer_chart
 
@@ -192,9 +190,7 @@ class TractionChartView(LoginRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
 
         if self.request.user.is_authenticated:
-            traction_chart = TractionChart()
-
-            traction_chart.set_owner(self.request.user)
+            traction_chart = TractionChart(self.request.user)
 
             context['traction_chart'] = traction_chart
 
@@ -211,9 +207,7 @@ class ScaleChartView(LoginRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
 
         if self.request.user.is_authenticated:
-            scale_chart = ScaleChart()
-
-            scale_chart.set_owner(self.request.user)
+            scale_chart = ScaleChart(self.request.user)
 
             context['scale_chart'] = scale_chart
 
@@ -230,9 +224,7 @@ class CollectionChartView(LoginRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
 
         if self.request.user.is_authenticated:
-            collection_chart = CollectionChart()
-
-            collection_chart.set_owner(self.request.user)
+            collection_chart = CollectionChart(self.request.user)
 
             context['collection_chart'] = collection_chart 
 
