@@ -1,1 +1,1 @@
-web: gunicorn train_manager.wsgi
+web: gunicorn train_manager.wsgi --log-file -
