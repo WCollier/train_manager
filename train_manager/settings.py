@@ -26,7 +26,7 @@ SECRET_KEY = '-(j7)mvcu#8ypcb$5oho8_je1n)zx4zgk!4qs#40y$+znl4sgg'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("DEBUG").lower() == "True"
 
-ALLOWED_HOSTS = ['.herokuapp.com']
+ALLOWED_HOSTS = ['.herokuapp.com', '*']
 
 SETTINGS_PATH = os.path.dirname(os.path.dirname(__file__))
 
