@@ -12,7 +12,7 @@ from .models import ModelTrain, Collection
 
 class ManufacturerChart(Chart):
     """
-    The chart which represents the percentage of manufacturers in a collection
+    The chart which represents the percentage of manufacturers in the collections
     """
 
     chart_type = 'pie'
@@ -26,14 +26,9 @@ class ManufacturerChart(Chart):
 
         super().__init__()
 
-    #def set_owner(self, owner):
-        #self.models = ModelTrain.objects.filter(owner=owner)
-
-        #self.manufacturer_list = self.models.values_list('manufacturer', flat=True)[::1]
-
     def get_labels(self, *args, **kwargs):
-        # Convert the query set to a list
-        return self.manufacturer_list
+        # Remove the duplicates from the manufacturer list
+        return list(set(self.manufacturer_list))
 
     def get_datasets(self, *args, **kwargs):
         data = self.generate_data()
@@ -166,7 +161,7 @@ def calculate_percentage(items):
 
     sum_of_counted = sum(counted_values)
 
-    return list(map(lambda value: value * 100.0 / sum_of_counted, counted_values))
+    return list(map(lambda value: int(value * 100.0 / sum_of_counted), counted_values))
 
 
 def random_colour():
