@@ -24,26 +24,24 @@ class ManufacturerChart(Chart):
 
         self.manufacturer_list = self.models.values_list('manufacturer', flat=True)[::1]
 
+        self.percentage = calculate_percentage(self.manufacturer_list)
+
+        self.ordered_list = self.percentage[0]
+
+        self.data = self.percentage[1]
+
         super().__init__()
 
     def get_labels(self, *args, **kwargs):
         # Remove the duplicates from the manufacturer list
-        return list(set(self.manufacturer_list))
+        return self.ordered_list 
 
     def get_datasets(self, *args, **kwargs):
-        data = self.generate_data()
-
-        colours = list(map(lambda col: random_colour(), data))
+        colours = list(map(lambda col: random_colour(), self.data))
 
         # Convert the query set to a list
-        return [DataSet(data=data, backgroundColor=colours)]
+        return [DataSet(data=self.data, backgroundColor=colours)]
 
-    def generate_data(self):
-        """
-        This function calculates a percentage from a list of repeated items
-        """
-
-        return calculate_percentage(self.manufacturer_list)
 
 class TractionChart(Chart):
     """
@@ -59,19 +57,22 @@ class TractionChart(Chart):
 
         self.traction_list = self.models.values_list('traction', flat=True)[::1]
 
+        self.percentage = calculate_percentage(self.traction_list)
+
+        self.ordered_list = self.percentage[0]
+
+        self.data = self.percentage[1]
+
         super().__init__()
 
     def get_labels(self, *args, **kwargs):
-        # Get the tuple, remove duplicates and convert to list
-        return list(set(sum(ModelTrain.TRACTION_TYPES, ())))
+        return self.ordered_list
 
     def get_datasets(self, *args, **kwargs):
-        data = self.generate_data()
-
-        colours = list(map(lambda col: random_colour(), data))
+        colours = list(map(lambda col: random_colour(), self.data))
 
         # Convert the query set to a list
-        return [DataSet(data=data, backgroundColor=colours)]
+        return [DataSet(data=self.data, backgroundColor=colours)]
 
     def generate_data(self):
         """
@@ -92,19 +93,25 @@ class ScaleChart(Chart):
     def __init__(self, owner):
         self.models = ModelTrain.objects.filter(owner=owner)
 
+        self.scales_list = self.models.values_list('scale', flat=True)[::1]
+
+        self.percentage = calculate_percentage(self.scales_list)
+
+        self.ordered_list = self.percentage[0]
+
+        self.data = self.percentage[1]
+
         super().__init__()
 
     def get_labels(self, *args, **kwargs):
         # Get the tuple, remove duplicates and convert to list
-        return list(set(sum(ModelTrain.SCALES, ())))
+        return self.ordered_list
 
     def get_datasets(self, *args, **kwargs):
-        data = self.generate_data()
-
-        colours = list(map(lambda col: random_colour(), data))
+        colours = list(map(lambda col: random_colour(), self.data))
 
         # Convert the query set to a list
-        return [DataSet(data=data, backgroundColor=colours)]
+        return [DataSet(data=self.data, backgroundColor=colours)]
 
     def generate_data(self):
         """
@@ -161,7 +168,7 @@ def calculate_percentage(items):
 
     sum_of_counted = sum(counted_values)
 
-    return list(map(lambda value: int(value * 100.0 / sum_of_counted), counted_values))
+    return (list(counted.keys()), list(map(lambda value: (value * 100.0 // sum_of_counted), counted_values)))
 
 
 def random_colour():
